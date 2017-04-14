@@ -57,10 +57,10 @@ ProtonBot::Plugin.new do
     dat.nreply 'Done!'
   end.perm!('manage-relays')
 
-  core.help_add('relays', 'relayinfo', 'relayinfo (id)', 'Shows info about relay')
+  core.help_add('relays', 'relayinfo', 'relayinfo {id}', 'Shows info about relay')
   cmd(cmd: 'relayinfo') do |dat|
     if dat[:split].empty?
-      dat.nreply ProtonBot::Bot::Messages::NOT_ENOUGH_PARAMETERS
+      dat.nreply "I have %B#{@relays.length}%N relays"
     else
       dat[:split].each do |id|
         if @relays[id.to_i]
@@ -113,7 +113,7 @@ ProtonBot::Plugin.new do
       this, other = *getchan(dat, v)
       if op = getop(this, other) and op.chans[other['channel']]
         if dat[:cmd] == 'ACTION'
-          op.privmsg(other['channel'], "%N[%Br#{k}%B]%N %B<%N#{dat[:nick]}%B>%N %C%BLUE* #{dat[:split].join(' ')}")
+          op.privmsg(other['channel'], "%N[%Br#{k}%B]%N %C%BLUE* #{dat[:nick]} #{dat[:split].join(' ')}")
         else
           op.privmsg(other['channel'], "%N[%Br#{k}%B]%N %B<%N#{dat[:nick]}%B>%N %C%BLUE[CTCP] #{dat[:message]}")
         end
